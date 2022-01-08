@@ -1,0 +1,19 @@
+{
+    "name": "usuario/bienes-raices-poo_php_inicio",
+    "description": "Creando un proyecto con POO",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Mario",
+            "email": "mj.empresas.contacto@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    }
+}
