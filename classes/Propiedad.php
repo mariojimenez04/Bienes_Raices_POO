@@ -36,7 +36,7 @@
             $this->wc = $args['wc'] ?? '';
             $this->estacionamiento = $args['estacionamiento'] ?? '';
             $this->creado = date('Y-m-d H:i:s');
-            $this->vendedorId = $args['vendedorId'] ?? '';
+            $this->vendedorId = $args['vendedorId'] ?? 1;
         }
 
         public function save_record() {
@@ -124,6 +124,43 @@
         }
 
         public static function all() {
-            
+            //Realizar consulta
+            $query = "SELECT * FROM propiedades";
+
+            //Obtener resultados
+            $resultado = self::consultarSQL($query);
+
+            return $resultado;
+        }
+
+        public static function consultarSQL($query) {
+            //Consultar la base de datos
+            $resultado = self::$db->query($query);
+
+            //Iterar los resultados
+            $array = [];
+            while ( $registro = $resultado->fetch_assoc() ) {
+                # code...
+                $array[] = self::crearObjeto($registro);
+            }
+
+            //Liberar la memoria
+            $resultado->free();
+
+            //Retornar los resultados
+            return $array;
+        }
+
+        protected static function crearObjeto($registro) {
+            $objeto = new self;
+
+            foreach ($registro as $key => $value) {
+                # code...
+                if( property_exists( $objeto, $key ) ){
+                    $objeto->$key = $value;
+                }
+            }
+
+            return $objeto;
         }
     }

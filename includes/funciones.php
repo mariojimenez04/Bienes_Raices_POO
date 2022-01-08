@@ -9,6 +9,13 @@ function incluirTemplate(string $nombre, bool $inicio = false)
     include TEMPLATES_URL . "/${nombre}.php";
 }
 
+//Escapar HTML
+function s($html) {
+    $s = htmlspecialchars($html);
+
+    return $s;
+}
+
 function estaAutenticado() {
     session_start();
 
