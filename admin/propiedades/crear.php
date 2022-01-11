@@ -22,15 +22,15 @@ $resultado = mysqli_query($db, $consulta);
 $errores = Propiedad::getErrores();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $propiedad = new Propiedad($_POST);
+    $propiedad = new Propiedad($_POST['propiedad']);
 
-    $imagePath = md5(uniqid(rand(), true)) . ".jpg";
+    $imageName = md5(uniqid(rand(), true)) . ".jpg";
 
-    if( $_FILES['imagen']['tmp_name'] ) {
+    if( $_FILES['propiedad']['tmp_name']['imagen'] ) {
         //Setear la imagen
         //Realizar fit a la imagen
-        $image = Image::make($_FILES['imagen']['tmp_name'])->fit(500,500);
-        $propiedad->setImage($imagePath);
+        $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(500,500);
+        $propiedad->setImage($imageName);
     }
     
     //Validar
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         //Guardar la imagen en el servidor
-        $image->save(CARPETA_IMAGENES . $imagePath);
+        $image->save(CARPETA_IMAGENES . $imageName);
 
         $resultado = $propiedad->save_record();
 

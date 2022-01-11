@@ -82,6 +82,15 @@
 
         //Subir archivos
         public function setImage($imagen) {
+            //Elimina la imagen previa
+            if( $this->id ) {
+                //Comprobar si existe el archivo
+                $fileExist = file_exists( CARPETA_IMAGENES . $this->imagen);
+                if( $fileExist ) {
+                    unlink(CARPETA_IMAGENES . $this->imagen);
+                }
+            }
+
             //Asignar al atributo de imagen el nombre de la imagen
             if($imagen) {
                 $this->imagen = $imagen;
@@ -133,6 +142,15 @@
             return $resultado;
         }
 
+        //Buscar un registro por id
+        public static function find($id) {
+            $query = "SELECT * FROM propiedades WHERE id = ${id}";
+
+            $resultado = self::consultarSQL($query);
+
+            return array_shift( $resultado );
+        }
+
         public static function consultarSQL($query) {
             //Consultar la base de datos
             $resultado = self::$db->query($query);
@@ -162,5 +180,14 @@
             }
 
             return $objeto;
+        }
+
+        //Sincroniza el objeto en memoria con los cambios realizados
+        public function syncUp( $args = [] ) {
+            foreach( $args as $key => $value ) {
+                if( property_exists($this, $key ) && !is_null($value) ) {
+                    $this->$key = $value;
+                }
+            }
         }
     }
